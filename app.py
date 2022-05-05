@@ -50,18 +50,18 @@ def main():
 
 
     elif choice == "Détection webcam":
-        st.subheader("Détection de visage avec webcam")
-        run = st.checkbox('Run')
-        FRAME_WINDOW = st.image([])
-        camera = cv2.VideoCapture(0)
+        # st.subheader("Détection de visage avec webcam")
+        # run = st.checkbox('Run')
+        # FRAME_WINDOW = st.image([])
+        # camera = cv2.VideoCapture(0)
 
-        while run:
-            _, frame = camera.read()
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            visage_webcam(frame)
-            FRAME_WINDOW.image(frame)
-        else:
-            st.write('Stopped')
+        # while run:
+        #     _, frame = camera.read()
+        #     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        #     visage_webcam(frame)
+        #     FRAME_WINDOW.image(frame)
+        # else:
+        #     st.write('Stopped')
 
         webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
 
