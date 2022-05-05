@@ -1,14 +1,24 @@
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer
 from image_detect import *
 import cv2
 from PIL import Image, ImageEnhance
 import os
+import av
 
 @st.cache
 def load_image(img_path):
     """Charger une image"""
     im = Image.open(img_path)
     return im
+
+class VideoProcessor:
+    def recv(self, frame):
+        img = frame.to_ndarray(format="bgr24")
+        
+        img = visage_webcam(img)
+        
+        return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 def main():
     """Application de detection de visage"""
@@ -52,6 +62,8 @@ def main():
             FRAME_WINDOW.image(frame)
         else:
             st.write('Stopped')
+
+        webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
 
 
 if __name__ == "__main__":

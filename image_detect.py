@@ -32,10 +32,12 @@ def detection_visage(img_path):
 
 
 
-def visage_webcam(cap):
+def visage_webcam(img):
     cascade_path = "./cascades/haarcascade_frontalface_default.xml"
 
     cascade = cv2.CascadeClassifier(cascade_path)
+
+    cap = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
     rect = cascade.detectMultiScale(cap, scaleFactor=1.1, minNeighbors=2, minSize=(100,100))
 
@@ -47,4 +49,4 @@ def visage_webcam(cap):
             cv2.rectangle(cap, (x, y - 30), (x+w, y), color, -1)
             cv2.putText(cap, f"Visage {i+1}", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1)
 
-    return cap
+    return cv2.cvtColor(cap, cv2.COLOR_BGR2RGB)
