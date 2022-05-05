@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
 from image_detect import *
 import cv2
 from PIL import Image, ImageEnhance
@@ -12,7 +12,7 @@ def load_image(img_path):
     im = Image.open(img_path)
     return im
 
-class VideoProcessor:
+class VideoProcessor(VideoTransformerBase):
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
         
