@@ -37,7 +37,7 @@ def visage_webcam(cap):
 
     cascade = cv2.CascadeClassifier(cascade_path)
 
-    rect = cascade.detectMultiScale(cap, scaleFactor=1.1, minNeighbors=2, minSize=(30,30))
+    rect = cascade.detectMultiScale(cap, scaleFactor=1.1, minNeighbors=2, minSize=(100,100))
 
     color = (0, 0, 0)
 
