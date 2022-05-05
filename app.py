@@ -1,5 +1,6 @@
 import streamlit as st
 from image_detect import *
+import cv2
 from PIL import Image, ImageEnhance
 import os
 
