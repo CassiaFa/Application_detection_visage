@@ -1,10 +1,12 @@
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
-from image_detect import *
 import cv2
 from PIL import Image, ImageEnhance
 import os
 import av
+import tensorflow as tf
+
+from image_detect import *
 
 @st.cache
 def load_image(img_path):
@@ -12,16 +14,32 @@ def load_image(img_path):
     im = Image.open(img_path)
     return im
 
+def load_model():
+    structure_path = "./model/model.json"
+    weights_path = "./model/model_weight.hdf5"
+
+    json_file = open(structure_path, 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+
+    model = tf.keras.models.model_from_json(loaded_model_json)
+    model.load_weights(weights_path)
+
+    return model
+
+
 class VideoProcessor(VideoTransformerBase):
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
         
-        img = visage_webcam(img)
+        img = visage_webcam(img, model)
         
         return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 def main():
     """Application de detection de visage"""
+    global model
+    model = load_model()
 
     st.title("Apllication de détection de visage")
     st.text("Créer avec Streamlit et OpenCV")
@@ -39,7 +57,7 @@ def main():
             if st.button("Détecter visage"):
                 original_image = load_image(image_file)
                 st.text("Visage détecté")
-                img, tableau = detection_visage(original_image)
+                img, tableau = detection_visage(original_image, model)
                 st.image(img, use_column_width=True)
                 st.dataframe(tableau)
             else:
